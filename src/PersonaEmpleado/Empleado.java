@@ -39,7 +39,7 @@ public class Empleado extends Persona{
     
     @Override
     public String toString() {
-        return "Empleado: Cedula: " + cedula + ", Nombre:" + nombre + ", Edad" + ", Telefono:" + telefono + ", Correo:" + correo + "Puesto= " + puesto + " , salario= " + salario + '}';
+        return "Empleado:" + super.toString() + "Puesto= " + puesto + " , salario= " + salario + '}';
     }
 
         

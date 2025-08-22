@@ -22,9 +22,13 @@ public class EmpleadoArrayList implements List<Empleado>{
     @Override
     public boolean add(Empleado t) {
         if (t != null) {
+            Empleado existente = find(t.getCedula());
+             if(existente != null){
+                return false; 
+            }
             return Array.add(t);
         }
-        return false;    }
+        return false;   }
 
     @Override
     public boolean delete(Empleado t) {
