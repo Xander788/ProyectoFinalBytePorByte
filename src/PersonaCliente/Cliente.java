@@ -28,15 +28,14 @@ public class Cliente extends Persona {
     }
     
     //constructor
-
     public Cliente(String licencia, String cedula, String nombre, LocalDate birthDate, String telefono, String correo) {
         super(cedula, nombre, birthDate, telefono, correo);
-        if(validarLicencia(licencia)){
+        if(licencia != null && validarLicencia(licencia)){
         this.licencia = licencia;}
     }
 
     @Override
     public String toString() {
-        return "Cliente: Cedula: " + cedula + ", Nombre:" + nombre + ", Edad" + ", Telefono:" + telefono + ", Correo:" + correo + "Licencia: " + licencia + '}';
+        return "Cliente:" +super.toString() + "Licencia: " + licencia + '}';
     }
 }

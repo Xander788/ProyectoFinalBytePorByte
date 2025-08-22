@@ -22,9 +22,13 @@ public class ClienteArrayList implements List<Cliente>{
     @Override
     public boolean add(Cliente t) {
         if (t != null) {
+            Cliente existente = find(t.getCedula());
+            if(existente != null){
+                return false;
+            }
             return Array.add(t);
         }
-        return false;    }
+        return false; }
 
     @Override
     public boolean delete(Cliente t) {
