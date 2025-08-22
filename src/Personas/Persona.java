@@ -19,12 +19,12 @@ public abstract class Persona {
 
 
     public void setTelefono(String telefono) {//falta validacion de constructor
-        if(validarTelefono(telefono))
+        if(telefono != null && validarTelefono(telefono))
         this.telefono = telefono;
     }
 
     public void setCorreo(String correo) {
-        if(validarCorreo(correo))
+        if(correo != null && validarCorreo(correo))
         this.correo = correo;
     }
 
@@ -58,21 +58,21 @@ public abstract class Persona {
     }
     
     public Persona(String cedula, String nombre, LocalDate birthDate, String telefono, String correo) {
-        if(validarCedula(cedula)){
+        if(cedula != null && validarCedula(cedula)){
             this.cedula = cedula;}
-        this.nombre = nombre;
-        if(!UtilDate.noEsUnaFechaFutura(birthDate)){
+        if(nombre != null){
+            this.nombre = nombre;}
+        if(birthDate != null && !UtilDate.noEsUnaFechaFutura(birthDate) && UtilDate.edadLegal(birthDate)){
             this.birthDate = birthDate;}
-        if(validarTelefono(telefono)){
+        if(telefono != null && validarTelefono(telefono)){
             this.telefono = telefono;}
-        if(validarCorreo(correo)){
-            this.correo = correo;}
-        
+        if(correo != null && validarCorreo(correo)){
+            this.correo = correo;} 
     }
 
     @Override
     public String toString() {
-        return "Persona{" + "cedula=" + cedula + ", nombre=" + nombre + ", birthDate=" + birthDate + ", telefono=" + telefono + ", correo=" + correo +'}';
+        return " cedula= " + cedula + ", nombre= " + nombre + ", birthDate= " + birthDate + ", telefono= " + telefono + ", correo= " + correo +'}';
     } 
     
 }
