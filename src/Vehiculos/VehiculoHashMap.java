@@ -29,7 +29,9 @@ public class VehiculoHashMap implements List<Vehiculo> {
 
     @Override
     public boolean delete(Vehiculo t) {
-        if (!map.containsKey(t.getPlaca())) return false;
+        if (!map.containsKey(t.getPlaca()) || !t.getEstado().equals(t.getEstado().Disponible)) {
+        return false;
+        }
         map.remove(t.getPlaca());
         return true;
     }

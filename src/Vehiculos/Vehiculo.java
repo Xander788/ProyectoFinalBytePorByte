@@ -4,6 +4,8 @@
  */
 package Vehiculos;
 
+import java.time.LocalDate;
+
 /**
  *
  * @author Gloriana
@@ -36,12 +38,12 @@ public class Vehiculo {
     }
 
     public void setAño(int año) {//validacion años 
-        if(año <= 2025 && año >= 2005){  
+        if(año <= LocalDate.now().getYear() && año >= (LocalDate.now().getYear()-20)){  
         this.año = año;}
     }
 
     public void setPlaca(String placa) {
-        if(validarPlaca(placa))
+        if(placa != null && validarPlaca(placa))
             this.placa = placa;
     }
 
@@ -63,17 +65,18 @@ public class Vehiculo {
     }
      
     public Vehiculo(String placa, String modelo, int año, EnumTipo marca, EnumEstado estado) {
-        if(validarPlaca(placa)){
-        this.placa = placa;}
+        if(placa != null && validarPlaca(placa)){
+            this.placa = placa;}
         this.modelo = modelo;
-        this.año = año;
+        if(año <= LocalDate.now().getYear() && año >= (LocalDate.now().getYear()-20)){ 
+            this.año = año;}
         this.marca = marca;
         this.estado = estado;
     }
 
     @Override
     public String toString() {
-        return "Vehiculo:" + "placa= " + placa + " , modelo= " + modelo + " , año = " + año + ", marca = " + marca + " , estado = " + estado + '}';
+        return "Vehiculo:" + "placa= " + placa + " , modelo= " + modelo + " , año = " + año + ", marca = " + marca + " , estado = " + estado;
     }
 
     
