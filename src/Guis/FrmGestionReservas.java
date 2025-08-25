@@ -4,12 +4,28 @@
  */
 package Guis;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import PersonaCliente.ClienteArrayList;
+import Reservas.Reserva;
+import Reservas.ReservasQueue;
+import Utils.UtilDate;
+import Utils.UtilGui;
+import Vehiculos.VehiculoHashMap;
+import Vehiculos.Vehiculo;
+import Vehiculos.EnumEstado;
+import Vehiculos.EnumTipo;
+import java.time.LocalDate;
+import java.util.*;
 /**
  *
  * @author Braya
  */
 public class FrmGestionReservas extends javax.swing.JInternalFrame {
-
+    private ClienteArrayList clientes;
+    private VehiculoHashMap vehiculos;
+    private ReservasQueue reservas;
+    private Reserva reserva;
     /**
      * Creates new form Gestion_Reservas
      */
@@ -18,6 +34,34 @@ public class FrmGestionReservas extends javax.swing.JInternalFrame {
         this.setClosable(true);      // Activa la "X" para cerrar
         this.setResizable(true);     // Permitir redimensionar
         this.setIconifiable(true);
+        this.reservas = new ReservasQueue();
+
+    }
+    
+    
+     private Vehiculo buscarVehiculoDisponible(EnumTipo tipo, LocalDate inicio, LocalDate fin) {
+        for (Vehiculo v : vehiculos.getMap().values()) {
+            if (v.getEstado() == EnumEstado.Disponible && estaDisponible(v.getPlaca(), inicio, fin)) {
+                return v;
+            }
+        }
+        return null;
+    }
+
+    private boolean estaDisponible(String placa, LocalDate inicio, LocalDate fin) {
+        for (Reserva r : reservas.getQueue()) {
+            if (r.getPlacaVehiculo().equals(placa) && r.hayConflictoDeFecha(inicio, fin)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    private void mostrarDatos() {
+        txtCliente.setText(reserva.getCedulaCliente());
+        txtFechaFin.setText(UtilDate.toString(reserva.getFechaFin()));
+        txtFechaInicio.setText(UtilDate.toString(reserva.getFechaInicio()));
+        txtVehiculo.setText(reserva.getPlacaVehiculo());
     }
 
     /**
@@ -29,21 +73,256 @@ public class FrmGestionReservas extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        btnCrear = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        txtCliente = new javax.swing.JTextField();
+        txtVehiculo = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        btnCancelar = new javax.swing.JButton();
+        btnModificar = new javax.swing.JButton();
+        btnBuscar = new javax.swing.JButton();
+        btnConfirmar = new javax.swing.JButton();
+        txtFechaInicio = new javax.swing.JFormattedTextField();
+        txtFechaFin = new javax.swing.JFormattedTextField();
+
+        setBackground(new java.awt.Color(0, 153, 204));
+
+        btnCrear.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        btnCrear.setText("Crear");
+        btnCrear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCrearActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("Cliente");
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setText("Vehiculo");
+
+        txtCliente.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+
+        txtVehiculo.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel5.setText("Fecha de Inicio");
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel6.setText("Fecha de Fin");
+
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel7.setText("Gestion De Reservas");
+
+        btnCancelar.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
+
+        btnModificar.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        btnModificar.setText("Modificar");
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarActionPerformed(evt);
+            }
+        });
+
+        btnBuscar.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        btnBuscar.setText("Buscar");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
+
+        btnConfirmar.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        btnConfirmar.setText("Confirmar");
+        btnConfirmar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConfirmarActionPerformed(evt);
+            }
+        });
+
+        txtFechaInicio.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
+        txtFechaInicio.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+
+        txtFechaFin.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
+        txtFechaFin.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 394, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap(7, Short.MAX_VALUE)
+                        .addComponent(btnCrear)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnModificar)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnCancelar)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnConfirmar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(152, 152, 152)
+                        .addComponent(jLabel7))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(txtFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(21, 21, 21)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(160, 217, Short.MAX_VALUE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(txtFechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, Short.MAX_VALUE)))))))
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(219, 219, 219)
+                .addComponent(btnBuscar)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 274, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtFechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnConfirmar)
+                    .addComponent(btnCrear)
+                    .addComponent(btnModificar)
+                    .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnBuscar)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
+        if (clientes.find(txtCliente.getText()) == null) {
+            UtilGui.enseñarMensaje(rootPane, closable," Cliente no registrado");
+        }
+        if (UtilDate.formatoFecha(txtFechaInicio.getText()).isBefore(LocalDate.now())) {
+            UtilGui.enseñarMensaje(rootPane, closable," La fecha de inicio no puede ser menor a la actual") ; 
+        }
+        if (UtilDate.formatoFecha(txtFechaFin.getText()).isBefore(UtilDate.formatoFecha(txtFechaInicio.getText()))) {
+             UtilGui.enseñarMensaje(rootPane, closable," La fecha de finalización debe ser posterior a la de inicio") ;  
+        }
+        if (UtilDate.formatoFecha(txtFechaInicio.getText()).plusDays(30).isBefore(UtilDate.formatoFecha(txtFechaFin.getText()))) {
+            UtilGui.enseñarMensaje(this, closable," No se permiten reservas mayores a 30 días") ; 
+        }
+        Boolean disponible = estaDisponible(txtVehiculo.getText(),UtilDate.formatoFecha(txtFechaInicio.getText()),UtilDate.formatoFecha(txtFechaFin.getText()));
+        
+        if (disponible == false) {
+            
+           UtilGui.enseñarMensaje(rootPane, closable,"️ El vehiculo seleccionado no esta disponible")  ;
+        }
+
+        Reserva nueva = new Reserva(txtCliente.getText() ,txtVehiculo.getText() , UtilDate.formatoFecha(txtFechaInicio.getText()) , UtilDate.formatoFecha(txtFechaFin.getText()));
+        reservas.add(nueva);        
+    }//GEN-LAST:event_btnCrearActionPerformed
+
+    private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
+        for (Reserva r : reservas.getQueue()) {
+           r.confirmar();
+       }
+    }//GEN-LAST:event_btnConfirmarActionPerformed
+
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+        for (Reserva r : reservas.getQueue()) {
+            if (r.getCedulaCliente().equals(txtCliente.getText()) && !r.isConfirmada()) {
+                Vehiculo find = vehiculos.find(txtVehiculo.getText());
+                if (find == null){
+                    UtilGui.enseñarMensaje(rootPane, closable," Vehículo no registrado") ;  
+                }
+                if (find.getEstado() != EnumEstado.Disponible){
+                    UtilGui.enseñarMensaje(rootPane, closable," Vehículo no disponible") ;  
+                }
+                if (!estaDisponible(txtVehiculo.getText(), r.getFechaInicio(), r.getFechaFin())) {
+                    UtilGui.enseñarMensaje(rootPane, closable," Vehículo ocupado en ese rango de fechas") ;  
+                }
+                r.setPlacaVehiculo(txtVehiculo.getText());
+                UtilGui.enseñarMensaje(rootPane, closable," Reserva modificada") ;  
+            }
+        }
+        UtilGui.enseñarMensaje(rootPane, closable," Reserva no encontrada o ya confirmada") ;   
+    }//GEN-LAST:event_btnModificarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+       for (Reserva r : reservas.getQueue()) {
+           reservas.delete(r);
+       }
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        BuscarReservas dialog = new BuscarReservas(null, true);
+        dialog.setList(reservas);
+        dialog.setVisible(true);
+        dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+        @Override
+        public void windowClosed(java.awt.event.WindowEvent e) {
+            Reserva seleccionado = dialog.getReservaSeleccionada();
+            if (seleccionado != null) {
+                reserva = seleccionado;
+                mostrarDatos();
+            }
+        }});
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnConfirmar;
+    private javax.swing.JButton btnCrear;
+    private javax.swing.JButton btnModificar;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JTextField txtCliente;
+    private javax.swing.JFormattedTextField txtFechaFin;
+    private javax.swing.JFormattedTextField txtFechaInicio;
+    private javax.swing.JTextField txtVehiculo;
     // End of variables declaration//GEN-END:variables
 }
