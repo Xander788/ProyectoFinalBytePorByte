@@ -43,7 +43,7 @@ public class Reserva {
         return !hoy.isBefore(fechaInicio) && !hoy.isAfter(fechaFin);
     }
 
-    public boolean seSolapaCon(LocalDate inicio, LocalDate fin) {
-        return !(fechaFin.isBefore(inicio) || fechaInicio.isAfter(fin));
+    public boolean hayConflictoDeFecha(LocalDate inicio, LocalDate fin) {
+        return (fechaFin.isBefore(inicio) || fechaInicio.isAfter(fin));
     }
 }
