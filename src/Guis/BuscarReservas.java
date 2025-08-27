@@ -57,7 +57,8 @@ public class BuscarReservas extends javax.swing.JDialog {
                 r.getCedulaCliente(),
                 r.getPlacaVehiculo() != null ? r.getPlacaVehiculo() : "En espera",
                 r.getFechaInicio(),
-                r.getFechaFin()
+                r.getFechaFin(),
+                r.isConfirmada()
             };
             model.addRow(data);
             reservasTabla.add(r); // guarda la referencia
@@ -196,7 +197,7 @@ public class BuscarReservas extends javax.swing.JDialog {
     }//GEN-LAST:event_btnAceptarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        // TODO add your handling code here:
+        this.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     /**

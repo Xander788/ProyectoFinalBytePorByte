@@ -4,9 +4,11 @@
  */
 package Guis;
 
+import PersonaCliente.Cliente;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import PersonaCliente.ClienteArrayList;
+import PersonaEmpleado.Empleado;
 import Reservas.Reserva;
 import Reservas.ReservasQueue;
 import Utils.UtilDate;
@@ -35,18 +37,10 @@ public class FrmGestionReservas extends javax.swing.JInternalFrame {
         this.setResizable(true);     // Permitir redimensionar
         this.setIconifiable(true);
         this.reservas = new ReservasQueue();
-
+        this.clientes = new ClienteArrayList();
+        this.vehiculos = new VehiculoHashMap(); 
     }
     
-    
-     private Vehiculo buscarVehiculoDisponible(EnumTipo tipo, LocalDate inicio, LocalDate fin) {
-        for (Vehiculo v : vehiculos.getMap().values()) {
-            if (v.getEstado() == EnumEstado.Disponible && estaDisponible(v.getPlaca(), inicio, fin)) {
-                return v;
-            }
-        }
-        return null;
-    }
 
     private boolean estaDisponible(String placa, LocalDate inicio, LocalDate fin) {
         for (Reserva r : reservas.getQueue()) {
@@ -239,22 +233,27 @@ public class FrmGestionReservas extends javax.swing.JInternalFrame {
 
     private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
         if (clientes.find(txtCliente.getText()) == null) {
-            UtilGui.enseñarMensaje(rootPane, closable," Cliente no registrado");
+            UtilGui.enseñarMensaje(rootPane,"Cliente no registrado"," Error");
+             return;
         }
         if (UtilDate.formatoFecha(txtFechaInicio.getText()).isBefore(LocalDate.now())) {
-            UtilGui.enseñarMensaje(rootPane, closable," La fecha de inicio no puede ser menor a la actual") ; 
+            UtilGui.enseñarMensaje(rootPane, "La fecha de inicio no puede ser menor a la actual","Error") ;
+             return;
         }
         if (UtilDate.formatoFecha(txtFechaFin.getText()).isBefore(UtilDate.formatoFecha(txtFechaInicio.getText()))) {
-             UtilGui.enseñarMensaje(rootPane, closable," La fecha de finalización debe ser posterior a la de inicio") ;  
+             UtilGui.enseñarMensaje(rootPane," La fecha de finalización debe ser posterior a la de inicio", "Error") ;
+              return;
         }
         if (UtilDate.formatoFecha(txtFechaInicio.getText()).plusDays(30).isBefore(UtilDate.formatoFecha(txtFechaFin.getText()))) {
-            UtilGui.enseñarMensaje(this, closable," No se permiten reservas mayores a 30 días") ; 
+            UtilGui.enseñarMensaje(rootPane," No se permiten reservas mayores a 30 días", "Error") ;
+            return;
         }
+        
         Boolean disponible = estaDisponible(txtVehiculo.getText(),UtilDate.formatoFecha(txtFechaInicio.getText()),UtilDate.formatoFecha(txtFechaFin.getText()));
         
         if (disponible == false) {
             
-           UtilGui.enseñarMensaje(rootPane, closable,"️ El vehiculo seleccionado no esta disponible")  ;
+           UtilGui.enseñarMensaje(rootPane,"️ El vehiculo seleccionado no esta disponible", "Error")  ;
         }
 
         Reserva nueva = new Reserva(txtCliente.getText() ,txtVehiculo.getText() , UtilDate.formatoFecha(txtFechaInicio.getText()) , UtilDate.formatoFecha(txtFechaFin.getText()));
@@ -264,27 +263,40 @@ public class FrmGestionReservas extends javax.swing.JInternalFrame {
     private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
         for (Reserva r : reservas.getQueue()) {
            r.confirmar();
+            System.out.println(r);
        }
     }//GEN-LAST:event_btnConfirmarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+        boolean modificada = false;
+
         for (Reserva r : reservas.getQueue()) {
             if (r.getCedulaCliente().equals(txtCliente.getText()) && !r.isConfirmada()) {
                 Vehiculo find = vehiculos.find(txtVehiculo.getText());
-                if (find == null){
-                    UtilGui.enseñarMensaje(rootPane, closable," Vehículo no registrado") ;  
+                if (find == null) {
+                    UtilGui.enseñarMensaje(rootPane, "Vehículo no registrado", "Error");
+                    return;
                 }
-                if (find.getEstado() != EnumEstado.Disponible){
-                    UtilGui.enseñarMensaje(rootPane, closable," Vehículo no disponible") ;  
+                if (find.getEstado() != EnumEstado.Disponible) {
+                    UtilGui.enseñarMensaje(rootPane, "Vehículo no disponible", "Error");
+                    return;
                 }
                 if (!estaDisponible(txtVehiculo.getText(), r.getFechaInicio(), r.getFechaFin())) {
-                    UtilGui.enseñarMensaje(rootPane, closable," Vehículo ocupado en ese rango de fechas") ;  
+                    UtilGui.enseñarMensaje(rootPane, "Vehículo ocupado en ese rango de fechas", "Error");
+                    return;
                 }
                 r.setPlacaVehiculo(txtVehiculo.getText());
-                UtilGui.enseñarMensaje(rootPane, closable," Reserva modificada") ;  
+                UtilGui.enseñarMensaje(rootPane, "Reserva modificada", "Error");
+                modificada = true;
+                break;
+            }
+             if (!modificada) {
+                UtilGui.enseñarMensaje(rootPane, "Reserva no encontrada o ya confirmada", "Error");
             }
         }
-        UtilGui.enseñarMensaje(rootPane, closable," Reserva no encontrada o ya confirmada") ;   
+
+       
+
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed

@@ -25,10 +25,27 @@ public class Reserva {
         this.confirmada = false;
     }
 
-    public String getCedulaCliente() { return cedulaCliente; }
-    public String getPlacaVehiculo() { return placaVehiculo; }
-    public LocalDate getFechaInicio() { return fechaInicio; }
-    public LocalDate getFechaFin() { return fechaFin; }
+    public String getCedulaCliente() {
+        return cedulaCliente;
+    }
+
+    public String getPlacaVehiculo() {
+        return placaVehiculo;
+    }
+
+    public LocalDate getFechaInicio() {
+        return fechaInicio;
+    }
+
+    public LocalDate getFechaFin() {
+        return fechaFin;
+    }
+    
+    private boolean getConfirmada(){
+        return confirmada;
+    }
+    
+    
     public boolean isConfirmada() { return confirmada; }
 
     public void setPlacaVehiculo(String nuevaPlaca) {
@@ -46,4 +63,5 @@ public class Reserva {
     public boolean hayConflictoDeFecha(LocalDate inicio, LocalDate fin) {
         return (fechaFin.isBefore(inicio) || fechaInicio.isAfter(fin));
     }
+    
 }
