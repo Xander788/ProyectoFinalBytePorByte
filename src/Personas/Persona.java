@@ -46,7 +46,7 @@ public abstract class Persona {
     //metodos
     private static boolean validarCedula (String cedula){
         //aca se valida que lleven guiones ademas 
-        return cedula.matches("^8-?\\d{4}-?\\d{4}$");
+        return cedula.matches("^[1-9]-?\\d{4}-?\\d{4}$");
     }
     
     private static boolean validarTelefono (String telefono){//revisar
@@ -62,7 +62,7 @@ public abstract class Persona {
             this.cedula = cedula;}
         if(nombre != null){
             this.nombre = nombre;}
-        if(birthDate != null && !UtilDate.noEsUnaFechaFutura(birthDate) && UtilDate.edadLegal(birthDate)){
+    if(birthDate != null && UtilDate.noEsUnaFechaFutura(birthDate) && UtilDate.edadLegal(birthDate)){
             this.birthDate = birthDate;}
         if(telefono != null && validarTelefono(telefono)){
             this.telefono = telefono;}
