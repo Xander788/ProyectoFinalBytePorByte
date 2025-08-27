@@ -232,6 +232,11 @@ public class FrmGestionReservas extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
+        if (txtCliente.getText().isBlank() || txtFechaInicio.getText().isBlank() || txtFechaFin.getText().isBlank() || txtVehiculo.getText().isBlank()) {
+            UtilGui.enseñarMensaje(rootPane, "Faltan Datos", "Error");
+            return;
+        }
+
         if (clientes.find(txtCliente.getText()) == null) {
             UtilGui.enseñarMensaje(rootPane,"Cliente no registrado"," Error");
              return;
@@ -248,28 +253,40 @@ public class FrmGestionReservas extends javax.swing.JInternalFrame {
             UtilGui.enseñarMensaje(rootPane," No se permiten reservas mayores a 30 días", "Error") ;
             return;
         }
+        if (vehiculos.find(txtVehiculo.getText()) == null) {
+            UtilGui.enseñarMensaje(rootPane,"Vehiculo no registrado"," Error");
+             return;
+        }
         
         Boolean disponible = estaDisponible(txtVehiculo.getText(),UtilDate.formatoFecha(txtFechaInicio.getText()),UtilDate.formatoFecha(txtFechaFin.getText()));
         
         if (disponible == false) {
-            
            UtilGui.enseñarMensaje(rootPane,"️ El vehiculo seleccionado no esta disponible", "Error")  ;
         }
 
         Reserva nueva = new Reserva(txtCliente.getText() ,txtVehiculo.getText() , UtilDate.formatoFecha(txtFechaInicio.getText()) , UtilDate.formatoFecha(txtFechaFin.getText()));
+        Vehiculo resultado = vehiculos.find(txtVehiculo.getText());
+        resultado.setEstado(EnumEstado.Alquilado);
+
         reservas.add(nueva);        
     }//GEN-LAST:event_btnCrearActionPerformed
 
     private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
+        if (txtCliente.getText().isBlank() || txtFechaInicio.getText().isBlank() || txtFechaFin.getText().isBlank() || txtVehiculo.getText().isBlank()) {
+            UtilGui.enseñarMensaje(rootPane, "Faltan Datos", "Error");
+            return;
+        }
         for (Reserva r : reservas.getQueue()) {
            r.confirmar();
-            System.out.println(r);
        }
     }//GEN-LAST:event_btnConfirmarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         boolean modificada = false;
-
+        if (txtCliente.getText().isBlank() || txtFechaInicio.getText().isBlank() || txtFechaFin.getText().isBlank() || txtVehiculo.getText().isBlank()) {
+            UtilGui.enseñarMensaje(rootPane, "Faltan Datos", "Error");
+            return;
+        }
         for (Reserva r : reservas.getQueue()) {
             if (r.getCedulaCliente().equals(txtCliente.getText()) && !r.isConfirmada()) {
                 Vehiculo find = vehiculos.find(txtVehiculo.getText());
@@ -300,7 +317,11 @@ public class FrmGestionReservas extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-       for (Reserva r : reservas.getQueue()) {
+       if (txtCliente.getText().isBlank() || txtFechaInicio.getText().isBlank() || txtFechaFin.getText().isBlank() || txtVehiculo.getText().isBlank()) {
+            UtilGui.enseñarMensaje(rootPane, "Faltan Datos", "Error");
+            return;
+        }
+        for (Reserva r : reservas.getQueue()) {
            reservas.delete(r);
        }
     }//GEN-LAST:event_btnCancelarActionPerformed
