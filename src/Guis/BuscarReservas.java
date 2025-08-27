@@ -22,8 +22,8 @@ public class BuscarReservas extends javax.swing.JDialog {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(BuscarReservas.class.getName());
     private ReservasQueue list;
-    private DefaultTableModel model;
     private Reserva reserva;
+    private DefaultTableModel model;
     private TableRowSorter<DefaultTableModel> sorter;
     private RowFilter<DefaultTableModel, Object> rowFilter;
     private List<Reserva> reservasTabla = new ArrayList<>();
