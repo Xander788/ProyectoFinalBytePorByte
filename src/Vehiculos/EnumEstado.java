@@ -25,6 +25,6 @@ public enum EnumEstado {
 
     @Override
     public String toString() {
-        return "Estado {Disponibilidad Automovil =" + disponibilidad + '}';
+        return  disponibilidad;
     }
 }
