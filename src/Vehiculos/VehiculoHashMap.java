@@ -61,13 +61,7 @@ public class VehiculoHashMap implements List<Vehiculo> {
         return map;
     }
     
-    public boolean borrar(String t) {
-        if (map.containsKey(t)) {
-        return false;
-        }
-        map.remove(t);
-        return true;
-    }
+    
     
     
     
