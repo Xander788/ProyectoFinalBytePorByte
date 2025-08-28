@@ -57,12 +57,11 @@ public class contrato {
         return fechaFinal;
     }
 
-    public contrato(String cedula, String vehiculo, LocalDate fechaInicio, LocalDate fechaFinal, estadoContrato estado, double monto) {
+    public contrato(String cedula, String vehiculo, LocalDate fechaInicio, LocalDate fechaFinal, estadoContrato estado) {
         this.cedula = cedula;
         this.vehiculo = vehiculo;
         this.fechaInicio = fechaInicio;
         this.fechaFinal = fechaFinal;
-        this.estado = estado.ACTIVO;
-        this.monto = monto;
+        this.estado = estadoContrato.ACTIVO;
     }
 }
