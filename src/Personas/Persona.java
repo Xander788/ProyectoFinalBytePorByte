@@ -50,7 +50,6 @@ public abstract class Persona {
     //metodos
     private static boolean validarCedula (String cedula){
         //aca se valida que lleven guiones ademas 
-        System.out.println("DEBUG cedula=[" + cedula+ "] length=" + cedula.length());
         return cedula.matches("^[1-9]-?\\d{4}-?\\d{4}$");
     }
     

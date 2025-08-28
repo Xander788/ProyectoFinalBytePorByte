@@ -25,18 +25,14 @@ public class Cliente extends Persona {
     }
 
     public static boolean validarLicencia(String licencia){
-        System.out.println("DEBUG licencia=[" + licencia + "] length=" + licencia.length());
         return licencia.matches("^[A-G]-\\d{6}$");
     }
     
     //constructor
     public Cliente(String cedula, String nombre, String telefono, LocalDate birthDate, String licencia, String correo) {
         super(cedula, nombre, birthDate, telefono, correo);
-        System.out.println("DEBUG constructor licencia=[" + licencia + "]");
         if (licencia != null && validarLicencia(licencia)) {
             this.licencia = licencia;
-        } else {
-            System.out.println("DEBUG licencia inválida -> " + licencia);
         }
     }
 
