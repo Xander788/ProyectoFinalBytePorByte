@@ -142,7 +142,7 @@ public class BuscarVehiculos extends javax.swing.JDialog {
         });
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        jLabel1.setText("Reservas");
+        jLabel1.setText("Vehiculos");
 
         btnAceptar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnAceptar.setText("Aceptar");
