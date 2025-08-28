@@ -14,6 +14,16 @@ import List.List;
  */
 public class ClienteArrayList implements List<Cliente>{
      ArrayList<Cliente> Array;
+     private  static ClienteArrayList instance;
+
+    public static ClienteArrayList getInstance() {
+        if (instance==null) {
+            instance= new ClienteArrayList();
+        }
+        return instance;
+    }
+     
+     
 
     public ClienteArrayList() {
         this.Array = new ArrayList();
