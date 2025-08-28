@@ -42,7 +42,7 @@
                       </Group>
                   </Group>
                   <Group type="102" attributes="0">
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="69" max="-2" attributes="0"/>
                               <Component id="btnfinalizar" min="-2" pref="128" max="-2" attributes="0"/>
@@ -53,8 +53,7 @@
                               <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                              <Component id="btrneliminar" max="32767" attributes="0"/>
+                              <Component id="btrneliminar" min="-2" pref="175" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="btnbuscar" min="-2" pref="159" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -185,6 +184,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Cancelar Contrato"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btrneliminarActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btncrear">
       <Properties>

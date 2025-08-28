@@ -14,7 +14,7 @@ import java.util.HashMap;
 public class contratoHashmap implements List<contrato> {
     HashMap<String,contrato> map;
 
-    public contratoHashmap(HashMap<String, contrato> map) {
+    public contratoHashmap() {
         this.map = new HashMap();
     }
     
