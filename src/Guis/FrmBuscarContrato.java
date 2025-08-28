@@ -41,7 +41,7 @@ public class FrmBuscarContrato extends javax.swing.JDialog {
         HashMap<String, contrato> map = list.getMap();
         model.setRowCount(0);
         for (contrato c : map.values()) {
-            Object[] data = {c.getCedula(), c.getVehiculo(), UtilDate.toString(c.getFechaInicio()), UtilDate.toString(c.getFechaFinal()), c.getEstado(),c.getMonto()};
+            Object[] data = {c.getCedula(), c.getVehiculo(), UtilDate.toString(c.getFechaInicio()), UtilDate.toString(c.getFechaFinal()), c.getEstado()};
             model.addRow(data);
         }
     }
@@ -49,11 +49,7 @@ public class FrmBuscarContrato extends javax.swing.JDialog {
     public contrato getContrato() {
         return contrato;
     }
-    
-    
-    
 
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
