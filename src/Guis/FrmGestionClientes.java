@@ -4,7 +4,6 @@
  */
 package Guis;
 
-import Guis.FrmBuscarCliente;
 import List.ListGui;
 import PersonaCliente.Cliente;
 import PersonaCliente.ClienteArrayList;
@@ -30,10 +29,10 @@ public class FrmGestionClientes extends javax.swing.JInternalFrame implements Li
      */
     public FrmGestionClientes() {
         initComponents();
+        lista = new ClienteArrayList();
         this.setClosable(true);      // Activa la "X" para cerrar
-        this.setResizable(false);     // Permitir redimensionar
+        this.setResizable(true);     // Permitir redimensionar
         this.setIconifiable(true);
-        lista = ClienteArrayList.getInstance();
     }
 
     @Override
@@ -337,7 +336,7 @@ public class FrmGestionClientes extends javax.swing.JInternalFrame implements Li
         jPanel1.add(TxtTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 50, 120, 40));
 
         TxtCedula.setFont(new java.awt.Font("Segoe UI", 2, 18)); // NOI18N
-        jPanel1.add(TxtCedula, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 110, 40));
+        jPanel1.add(TxtCedula, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 120, 40));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 580, 310));
 

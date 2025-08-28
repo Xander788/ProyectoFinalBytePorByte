@@ -1,15 +1,13 @@
 package Guis;
 
-import PersonaCliente.Cliente;
-import PersonaCliente.ClienteArrayList;
+import PersonaEmpleado.Empleado;
+import PersonaEmpleado.EmpleadoArrayList;
 import Utils.UtilDate;
 import Utils.UtilGui;
-import java.awt.Frame;
-import java.awt.Window;
-import java.util.ArrayList;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
+
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -20,54 +18,58 @@ import javax.swing.table.TableRowSorter;
  *
  * @author Braya
  */
-public class FrmBuscarCliente extends javax.swing.JDialog {
-    private ClienteArrayList lista;
-    private Cliente cliente;
+public class FrmBuscarEmpleado extends javax.swing.JDialog {
+    private EmpleadoArrayList lista;
+    private Empleado empleado;
     private DefaultTableModel Modelo;
     private TableRowSorter<DefaultTableModel> Clasificador;
     private RowFilter<DefaultTableModel, Object> FiltroFila;
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrmBuscarCliente.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FrmBuscarEmpleado.class.getName());
 
     
     /**
      * Creates new form FrmBuscarCliente
      */
-    public FrmBuscarCliente(java.awt.Frame parent, boolean modal) {
+    public FrmBuscarEmpleado(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        Modelo = (DefaultTableModel) tblClientes.getModel();
+        Modelo = (DefaultTableModel) tblEmpleado.getModel();
         Clasificador = new TableRowSorter<>(Modelo);
-        tblClientes.setRowSorter(Clasificador);
+        tblEmpleado.setRowSorter(Clasificador);
     }
 
-    public void setLista(ClienteArrayList lista) {
+    public void setLista(EmpleadoArrayList lista) {
         this.lista = lista;
         CargarTabla();
     }
 
-    public Cliente getCliente() {
-        return cliente;
-    } 
+    public Empleado getEmpleado() {
+        return empleado;
+    }
     
-    public void CargarTabla(){
-        Modelo.setRowCount(0);
-        for (Cliente cliente : lista.getArray()) {
-            int edad = UtilDate.calcularEdad(cliente.getBirthDate());
-            Object [] fila = { 
-                cliente.getCedula(),
-                cliente.getNombre(),
-                cliente.getTelefono(),
-                UtilDate.toString(cliente.getBirthDate()),
+    public void CargarTabla() {
+        if (lista == null) {
+            return; // previene NPE si lista no está inicializada
+        }
+        Modelo.setRowCount(0);     // limpia la tabla antes de agregar filas
+        for (Empleado emp : lista.getArray()) { // usar variable local diferente a 'this.empleado'
+            int edad = UtilDate.calcularEdad(emp.getBirthDate());
+            Object[] fila = {
+                emp.getCedula(),
+                emp.getNombre(),
+                emp.getTelefono(),
+                UtilDate.toString(emp.getBirthDate()),
+                emp.getCorreo(),
                 edad,
-                cliente.getLicencia(),
-                cliente.getCorreo()
+                emp.getPuesto(),
+                emp.getSalario()
             };
             Modelo.addRow(fila);
         }
     }
-    
-    
 
+       
+        
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -80,7 +82,7 @@ public class FrmBuscarCliente extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
         txtFilter = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblClientes = new javax.swing.JTable();
+        tblEmpleado = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -91,8 +93,8 @@ public class FrmBuscarCliente extends javax.swing.JDialog {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 2, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Buscar Cliente");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 690, 40));
+        jLabel2.setText("Buscar Empleado");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 730, 40));
 
         txtFilter.setFont(new java.awt.Font("Segoe UI", 2, 18)); // NOI18N
         txtFilter.addActionListener(new java.awt.event.ActionListener() {
@@ -100,34 +102,35 @@ public class FrmBuscarCliente extends javax.swing.JDialog {
                 txtFilterActionPerformed(evt);
             }
         });
-        getContentPane().add(txtFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 660, 40));
+        getContentPane().add(txtFilter, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 710, 40));
 
+        jScrollPane1.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
         jScrollPane1.setOpaque(false);
 
-        tblClientes.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
-        tblClientes.setModel(new javax.swing.table.DefaultTableModel(
+        tblEmpleado.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
+        tblEmpleado.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Cedula", "Nombre", "Telefono", "Fecha Nacimiento", "Edad", "Licencia", "Correo"
+                "Cedula", "Nombre", "Telefono", "Fecha Nacimiento", "Correo", "Edad", "Puesto", "Salario"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
         });
-        tblClientes.setOpaque(false);
-        jScrollPane1.setViewportView(tblClientes);
+        tblEmpleado.setOpaque(false);
+        jScrollPane1.setViewportView(tblEmpleado);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 90, 690, 190));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 90, 730, 230));
 
         jButton1.setFont(new java.awt.Font("Segoe UI", 2, 18)); // NOI18N
         jButton1.setText("Cancelar");
@@ -136,7 +139,7 @@ public class FrmBuscarCliente extends javax.swing.JDialog {
                 jButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 330, -1, -1));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 370, -1, -1));
 
         jButton2.setFont(new java.awt.Font("Segoe UI", 2, 18)); // NOI18N
         jButton2.setText("Aceptar");
@@ -145,10 +148,10 @@ public class FrmBuscarCliente extends javax.swing.JDialog {
                 jButton2ActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 330, -1, -1));
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 370, -1, -1));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/fondo.png"))); // NOI18N
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 690, 390));
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 730, 440));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -159,13 +162,13 @@ public class FrmBuscarCliente extends javax.swing.JDialog {
     }//GEN-LAST:event_txtFilterActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        int fila = tblClientes.getSelectedRow();
+        int fila = tblEmpleado.getSelectedRow();
         if(fila == -1){
             UtilGui.enseñarMensajeError(this, "Debe seleccionar un cliente", "Error");
             return;
         }
-        String cedula = String.valueOf(tblClientes.getValueAt(fila,0));
-        cliente = lista.find(cedula);
+        String cedula = String.valueOf(tblEmpleado.getValueAt(fila,0));
+        empleado = lista.find(cedula);
         setVisible(false);
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -199,7 +202,7 @@ public class FrmBuscarCliente extends javax.swing.JDialog {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                FrmBuscarCliente dialog = new FrmBuscarCliente(new javax.swing.JFrame(), true);
+                FrmBuscarEmpleado dialog = new FrmBuscarEmpleado(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -217,7 +220,7 @@ public class FrmBuscarCliente extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tblClientes;
+    private javax.swing.JTable tblEmpleado;
     private javax.swing.JTextField txtFilter;
     // End of variables declaration//GEN-END:variables
 }

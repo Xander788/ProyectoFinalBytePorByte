@@ -31,7 +31,7 @@ public class Empleado extends Persona{
     }
     
     //constructor
-    public Empleado(String puesto, int salario, String cedula, String nombre, LocalDate birthDate, String telefono, String correo) {
+    public Empleado(String cedula, String nombre, String telefono, LocalDate birthDate, String correo, String puesto, int salario) {
         super(cedula, nombre, birthDate, telefono, correo);
         this.puesto = puesto;
         this.salario = salario;

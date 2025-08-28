@@ -52,4 +52,8 @@ public class EmpleadoArrayList implements List<Empleado>{
     public Empleado get(int index) {
         return Array.get(index);
     }
+
+    public ArrayList<Empleado> getArray() {
+        return Array;
+    }
 }
