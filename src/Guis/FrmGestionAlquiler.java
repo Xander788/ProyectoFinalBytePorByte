@@ -44,7 +44,7 @@ public class FrmGestionAlquiler extends javax.swing.JInternalFrame {
         initComponents();
         list = new contratoHashmap();
         this.setClosable(true);      
-        this.setResizable(true);     
+        this.setResizable(false);     
         this.setIconifiable(true);
     }
     

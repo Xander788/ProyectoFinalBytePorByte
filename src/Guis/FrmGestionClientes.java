@@ -31,7 +31,7 @@ public class FrmGestionClientes extends javax.swing.JInternalFrame implements Li
         initComponents();
         lista = new ClienteArrayList();
         this.setClosable(true);      // Activa la "X" para cerrar
-        this.setResizable(true);     // Permitir redimensionar
+        this.setResizable(false);     // Permitir redimensionar
         this.setIconifiable(true);
     }
 

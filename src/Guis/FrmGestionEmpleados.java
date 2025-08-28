@@ -30,7 +30,7 @@ public class FrmGestionEmpleados extends javax.swing.JInternalFrame implements L
         initComponents();
         lista = new EmpleadoArrayList();
         this.setClosable(true);      // Activa la "X" para cerrar
-        this.setResizable(true);     // Permitir redimensionar
+        this.setResizable(false);     // Permitir redimensionar
         this.setIconifiable(true);
     }
     
