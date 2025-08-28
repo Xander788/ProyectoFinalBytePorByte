@@ -19,19 +19,25 @@ public class Cliente extends Persona {
     }
 
     public void setLicencia(String licencia) {
-        if(validarLicencia(licencia))
+        if(licencia != null && validarLicencia(licencia))
             this.licencia = licencia;
+        
     }
 
     public static boolean validarLicencia(String licencia){
-        return licencia.matches("^[A-G][0-9]{6}$");
+        System.out.println("DEBUG licencia=[" + licencia + "] length=" + licencia.length());
+        return licencia.matches("^[A-G]-\\d{6}$");
     }
     
     //constructor
-    public Cliente(String licencia, String cedula, String nombre, LocalDate birthDate, String telefono, String correo) {
+    public Cliente(String cedula, String nombre, String telefono, LocalDate birthDate, String licencia, String correo) {
         super(cedula, nombre, birthDate, telefono, correo);
-        if(licencia != null && validarLicencia(licencia)){
-        this.licencia = licencia;}
+        System.out.println("DEBUG constructor licencia=[" + licencia + "]");
+        if (licencia != null && validarLicencia(licencia)) {
+            this.licencia = licencia;
+        } else {
+            System.out.println("DEBUG licencia inválida -> " + licencia);
+        }
     }
 
     @Override

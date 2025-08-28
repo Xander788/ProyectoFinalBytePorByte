@@ -28,6 +28,10 @@ public abstract class Persona {
         this.correo = correo;
     }
 
+    public String getNombre() {
+        return nombre;
+    }
+
     public String getCedula() {
         return cedula;
     }
@@ -46,11 +50,12 @@ public abstract class Persona {
     //metodos
     private static boolean validarCedula (String cedula){
         //aca se valida que lleven guiones ademas 
+        System.out.println("DEBUG cedula=[" + cedula+ "] length=" + cedula.length());
         return cedula.matches("^[1-9]-?\\d{4}-?\\d{4}$");
     }
     
     private static boolean validarTelefono (String telefono){//revisar
-        return telefono.matches("^[2678]\\d{7}$");
+        return telefono.matches("^[2678]\\d-\\d{2}-\\d{2}-\\d{2}$");
     }
     
     private static boolean validarCorreo (String correo){

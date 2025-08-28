@@ -52,4 +52,8 @@ public class ClienteArrayList implements List<Cliente>{
     public Cliente get(int index) {
         return Array.get(index);
     }
+
+    public ArrayList<Cliente> getArray() {
+        return Array;
+    }
 }

@@ -100,7 +100,7 @@ public class FrmGestionAlquiler extends javax.swing.JInternalFrame {
             txtfechaInicio.setText(reserva.getFechaInicio().toString());
             txtfechaFinalizacion.setText(reserva.getFechaFin().toString());
             txtestado.setText(estadoContrato.ACTIVO.toString());
-            contrato nuevo = new contrato(txtcedula.getText(),txtfechaInicio.getText(),txtfechaFinalizacion.getText());
+            //contrato nuevo = new contrato(txtcedula.getText(),txtfechaInicio.getText(),txtfechaFinalizacion.getText());
 
             
         }else{
