@@ -42,6 +42,7 @@ public class FrmGestionAlquiler extends javax.swing.JInternalFrame {
 
     public FrmGestionAlquiler() {
         initComponents();
+        list = new contratoHashmap();
         this.setClosable(true);      
         this.setResizable(true);     
         this.setIconifiable(true);
@@ -94,10 +95,15 @@ public class FrmGestionAlquiler extends javax.swing.JInternalFrame {
         if (UtilDate.formatoFecha(txtfechaFinalizacion.getText()).isBefore(UtilDate.formatoFecha(txtfechaInicio.getText()))) {
              UtilGui.enseñarMensaje(rootPane, closable," La fecha de finalización debe ser posterior a la de inicio") ;  
         } 
+        if (vehiculos.find(txtplaca.getText()) == null) {
+            UtilGui.enseñarMensaje(rootPane,"Vehiculo no registrado"," Error");
+             return;
+        }
     }
     
     public void crearContrato(){
         if(reservas.find(reserva.getCedulaCliente()).equals(txtcedula.getText())){
+            txtplaca.setText(reserva.getPlacaVehiculo().toString());
             txtfechaInicio.setText(reserva.getFechaInicio().toString());
             txtfechaFinalizacion.setText(reserva.getFechaFin().toString());
             contrato nuevo = new contrato(txtcedula.getText() ,txtplaca.getText() , UtilDate.formatoFecha(txtfechaInicio.getText()) , UtilDate.formatoFecha(txtfechaFinalizacion.getText()),estadoContrato.ACTIVO);
@@ -108,17 +114,21 @@ public class FrmGestionAlquiler extends javax.swing.JInternalFrame {
             UtilGui.enseñarMensaje(rootPane, closable, "Se creo exitosamente");
         }else{
             validarDatos();
+            Vehiculo resultado = vehiculos.find(txtplaca.getText());
+            resultado.setEstado(EnumEstado.Alquilado);
+            
             contrato nuevo = new contrato(txtcedula.getText() ,txtplaca.getText() , UtilDate.formatoFecha(txtfechaInicio.getText()) , UtilDate.formatoFecha(txtfechaFinalizacion.getText()),estadoContrato.ACTIVO);
             if(!list.add(nuevo)){
-                UtilGui.enseñarMensaje(rootPane, closable, "algo paso, nose pudo agregar");
+                UtilGui.enseñarMensaje(rootPane, "algo paso", "error");
             }
+            
             list.add(nuevo);
-            UtilGui.enseñarMensaje(rootPane, closable, "Se creo exitosamente"); 
+            UtilGui.enseñarMensaje(rootPane, "se creo exitosamente", "info"); 
         } 
     }
     public void finalizarContrato(){
         if(list.find(txtcedula.getText())==null){
-            UtilGui.enseñarMensaje(rootPane, closable, "no se encuentra el contrato");
+            UtilGui.enseñarMensaje(rootPane, "no se encuentra el contrato", "error");
         }else{
             contrato res = list.find(txtcedula.getText());
             res.setEstado(estadoContrato.FINALIZADO);
@@ -127,7 +137,7 @@ public class FrmGestionAlquiler extends javax.swing.JInternalFrame {
     
     public void CancelarContrato(){
        if(list.find(txtcedula.getText())==null){
-            UtilGui.enseñarMensaje(rootPane, closable, "no se encuentra el contrato");
+            UtilGui.enseñarMensaje(rootPane, "no se encuentre el contrato", "error");
         }else{
             if(list.find(Contrato.getEstado()).equals("Activo")){
                 Contrato.setEstado(estadoContrato.CANCELADO);
@@ -136,10 +146,6 @@ public class FrmGestionAlquiler extends javax.swing.JInternalFrame {
         }
         
     }
-   
-    
-
-    
     
     public void mostrar(){
         txtcedula.setText(Contrato.getCedula());
@@ -220,6 +226,11 @@ public class FrmGestionAlquiler extends javax.swing.JInternalFrame {
 
         btrneliminar.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         btrneliminar.setText("Cancelar Contrato");
+        btrneliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btrneliminarActionPerformed(evt);
+            }
+        });
 
         btncrear.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         btncrear.setText("Crear Contrato");
@@ -280,8 +291,8 @@ public class FrmGestionAlquiler extends javax.swing.JInternalFrame {
                                 .addComponent(txtcedula)
                                 .addComponent(lbltarifa, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addGap(69, 69, 69)
                                 .addComponent(btnfinalizar, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(30, 30, 30)
@@ -289,9 +300,8 @@ public class FrmGestionAlquiler extends javax.swing.JInternalFrame {
                                 .addGap(28, 28, 28)
                                 .addComponent(btnactualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(34, 34, 34))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(btrneliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btrneliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(btnbuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -376,6 +386,10 @@ public class FrmGestionAlquiler extends javax.swing.JInternalFrame {
 
         
     }//GEN-LAST:event_btnactualizarActionPerformed
+
+    private void btrneliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btrneliminarActionPerformed
+        CancelarContrato();
+    }//GEN-LAST:event_btrneliminarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

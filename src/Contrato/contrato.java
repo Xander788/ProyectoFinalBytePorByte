@@ -29,6 +29,10 @@ public class contrato {
     public String getCedula() {
         return cedula;
     }
+    private static boolean validarCedula (String cedula){
+        
+        return cedula.matches("^[1-9]-?\\d{4}-?\\d{4}$");
+    }
 
     public void setEstado(estadoContrato estado) {
         this.estado = estado;
@@ -58,10 +62,19 @@ public class contrato {
     }
 
     public contrato(String cedula, String vehiculo, LocalDate fechaInicio, LocalDate fechaFinal, estadoContrato estado) {
-        this.cedula = cedula;
+        if(cedula != null && validarCedula(cedula)){
+            this.cedula = cedula;}
         this.vehiculo = vehiculo;
-        this.fechaInicio = fechaInicio;
-        this.fechaFinal = fechaFinal;
+        if(fechaInicio.isBefore(LocalDate.now())){
+            throw new IllegalArgumentException("La fecha de inicio no puede ser menor a la fecha actual");
+        }else{
+            this.fechaInicio = fechaInicio;
+        }
+        if (fechaFinal.isBefore(fechaInicio)) {
+            throw new IllegalArgumentException("La fecha de finalización debe ser posterior a la fecha de inicio");
+        }else{
+            this.fechaFinal = fechaFinal;
+        }
         this.estado = estadoContrato.ACTIVO;
     }
 }
