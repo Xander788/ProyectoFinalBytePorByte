@@ -5,11 +5,12 @@
 package Guis;
 
 import Reservas.Reserva;
-import Reservas.ReservasQueue;
 import Utils.UtilGui;
+import Vehiculos.Vehiculo;
+import Vehiculos.VehiculoHashMap;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Queue;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
@@ -18,53 +19,43 @@ import javax.swing.table.TableRowSorter;
  *
  * @author alexr
  */
-public class BuscarReservas extends javax.swing.JDialog {
-    
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(BuscarReservas.class.getName());
-    private ReservasQueue list;
-    private Reserva reserva;
+public class BuscarVehiculos extends javax.swing.JDialog {
+    private VehiculoHashMap vehiculos;
+    private Vehiculo vehiculo;
     private DefaultTableModel model;
     private TableRowSorter<DefaultTableModel> sorter;
     private RowFilter<DefaultTableModel, Object> rowFilter;
-    private List<Reserva> reservasTabla = new ArrayList<>();
+    
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(BuscarVehiculos.class.getName());
+
     /**
-     * Creates new form BuscarReservas
+     * Creates new form BuscarVehiculos
      */
-    public BuscarReservas(java.awt.Frame parent, boolean modal) {
+    public BuscarVehiculos(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        model = (DefaultTableModel) tblReservas.getModel();
+        model = (DefaultTableModel) tblVehiculos.getModel();
         sorter = new TableRowSorter<>(model);
-        tblReservas.setRowSorter(sorter);
+        tblVehiculos.setRowSorter(sorter);
     }
     
-    public void setList(ReservasQueue list){
-        this.list = list;
+    public void setList(VehiculoHashMap list){
+        this.vehiculos = list;
         cargarTabla();
     }
     
-    public Reserva getReservaSeleccionada() {
-        return reserva;
-    }
-    
-    private void cargarTabla() {
-        reservasTabla.clear();
-        Queue<Reserva> cola = list.getQueue();
+    private void cargarTabla(){
+        HashMap<String, Vehiculo> map = vehiculos.getMap();
         model.setRowCount(0);
-
-        for (Reserva r : cola) {
-            Object[] data = {
-                r.getCedulaCliente(),
-                r.getPlacaVehiculo() != null ? r.getPlacaVehiculo() : "En espera",
-                r.getFechaInicio(),
-                r.getFechaFin(),
-                r.isConfirmada()
-            };
+        for (Vehiculo vehiculo : map.values()) {
+            Object[] data = {vehiculo.getPlaca(), vehiculo.getModelo(), vehiculo.getAño(), vehiculo.getMarca(), vehiculo.getEstado()};
             model.addRow(data);
-            reservasTabla.add(r); // guarda la referencia
         }
     }
-
+    
+     public Vehiculo getVehiculo() {
+        return vehiculo;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -75,23 +66,16 @@ public class BuscarReservas extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        txtFilter = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblReservas = new javax.swing.JTable();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblReservas1 = new javax.swing.JTable();
+        txtFilter = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
         btnAceptar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-
-        txtFilter.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtFilterActionPerformed(evt);
-            }
-        });
-
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        jLabel1.setText("Reservas");
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tblVehiculos = new javax.swing.JTable();
 
         tblReservas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -121,6 +105,45 @@ public class BuscarReservas extends javax.swing.JDialog {
         });
         jScrollPane1.setViewportView(tblReservas);
 
+        tblReservas1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Cedula Cliente", "Placa Vehiculo", "Fecha Inicio", "Fecha Fin", "Confirmada"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(tblReservas1);
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        txtFilter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtFilterActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel1.setText("Reservas");
+
         btnAceptar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnAceptar.setText("Aceptar");
         btnAceptar.addActionListener(new java.awt.event.ActionListener() {
@@ -137,42 +160,67 @@ public class BuscarReservas extends javax.swing.JDialog {
             }
         });
 
+        tblVehiculos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Placa", "Modelo", "Año", "Tipo", "Estado"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane3.setViewportView(tblVehiculos);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(241, 241, 241)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtFilter)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 588, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(txtFilter))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(244, 244, 244)
-                        .addComponent(jLabel1)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addContainerGap()
                         .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane3))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtFilter, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAceptar)
                     .addComponent(btnCancelar))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(12, 12, 12))
         );
 
         pack();
@@ -184,16 +232,15 @@ public class BuscarReservas extends javax.swing.JDialog {
     }//GEN-LAST:event_txtFilterActionPerformed
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
-        int row = tblReservas.getSelectedRow();
+        int row = tblVehiculos.getSelectedRow();
         if (row == -1) {
             UtilGui.enseñarMensajeError(this, "Debe seleccionar una reserva", "Error");
             return;
         }
-        int modelIndex = tblReservas.convertRowIndexToModel(row);
-        reserva = reservasTabla.get(modelIndex); 
+        String id=String.valueOf(tblVehiculos.getValueAt(row,0));
+        vehiculo =vehiculos.find(id);
         setVisible(false);
         dispose();
-
     }//GEN-LAST:event_btnAceptarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -225,7 +272,7 @@ public class BuscarReservas extends javax.swing.JDialog {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                BuscarReservas dialog = new BuscarReservas(new javax.swing.JFrame(), true);
+                BuscarVehiculos dialog = new BuscarVehiculos(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -242,7 +289,11 @@ public class BuscarReservas extends javax.swing.JDialog {
     private javax.swing.JButton btnCancelar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable tblReservas;
+    private javax.swing.JTable tblReservas1;
+    private javax.swing.JTable tblVehiculos;
     private javax.swing.JTextField txtFilter;
     // End of variables declaration//GEN-END:variables
 }

@@ -14,6 +14,16 @@ import java.util.HashSet;
  */
 public class VehiculoHashMap implements List<Vehiculo> {
     HashMap<String,Vehiculo> map;
+    public static VehiculoHashMap instance;
+
+
+    public static VehiculoHashMap getInstance() {
+        if (instance==null) {
+            instance= new VehiculoHashMap();
+        }
+        return instance;
+    }
+    
 
     public VehiculoHashMap() {
         this.map = new HashMap();
@@ -50,5 +60,9 @@ public class VehiculoHashMap implements List<Vehiculo> {
     public HashMap<String, Vehiculo> getMap() {
         return map;
     }
+    
+    
+    
+    
     
 }

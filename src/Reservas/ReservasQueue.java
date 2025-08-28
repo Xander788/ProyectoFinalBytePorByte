@@ -14,6 +14,7 @@ import java.util.Queue;
  */
 public class ReservasQueue implements List<Reserva>{
 private Queue<Reserva> queue = new LinkedList<>();
+public static ReservasQueue instance;
 
     @Override
     public boolean add(Reserva t) {
@@ -45,6 +46,17 @@ private Queue<Reserva> queue = new LinkedList<>();
 
     public Queue<Reserva> getQueue() {
         return queue;
+    }
+
+    public static ReservasQueue getInstance() {
+        if (instance==null) {
+            instance= new ReservasQueue();
+        }
+        return instance;
+    }
+
+    private ReservasQueue() {
+        queue = new LinkedList<>();
     }
     
 }

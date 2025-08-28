@@ -61,7 +61,8 @@ public class Reserva {
     }
 
     public boolean hayConflictoDeFecha(LocalDate inicio, LocalDate fin) {
-        return (fechaFin.isBefore(inicio) || fechaInicio.isAfter(fin));
+        return !(this.fechaFin.isBefore(inicio) || this.fechaInicio.isAfter(fin));
+
     }
     
 }

@@ -27,7 +27,7 @@ public enum EnumTipo {
 
     @Override
     public String toString() {
-        return "Tipo: marca = " + marca + '}';
+        return marca;
     }
 
    
